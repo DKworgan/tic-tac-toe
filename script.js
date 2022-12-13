@@ -73,18 +73,19 @@ const Player = (num) => {
     function incrementTurn(){
         this.numberOfTurns += 1;
     }
+
     return {playerSymbol, numberOfTurns, incrementTurn};
 }
+
+
 
 const gameModule = (() =>{
 
     const cells = document.querySelectorAll(".gridRowDiv");
-    const gameArr = new Array(3);
+    const gameArr = [[null,null,null],[null,null,null],[null,null,null]];
     const p1 = Player(1);
     const p2 = Player(2);
-    gameArr.fill(new Array(3).fill(null));
-    
-    //console.log(p1.numberOfTurns);
+    //gameArr.fill(new Array(3).fill(null));
     
     function whosTurn(){
         let totalTurns = p1.numberOfTurns + p2.numberOfTurns;
@@ -100,7 +101,15 @@ const gameModule = (() =>{
     for(let i = 0; i < cells.length; i++){
 
         cells[i].addEventListener("click",() =>{
-            cells[i].textContent = whosTurn();
+            let colId = cells[i].id[3];
+            let rowId = cells[i].id[7];
+
+            //assigns it to variable first so it doesnt increment twice when invoked
+           
+            if(gameArr[colId][rowId] == null){
+                cells[i].textContent = whosTurn();
+                gameArr[colId][rowId] = cells[i].textContent;
+            }
         })
 
     }
