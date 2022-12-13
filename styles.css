@@ -34,6 +34,28 @@ body {
     
 }
 
+#col0 {
+    border-right: solid;
+}
+
+#col1 {
+    border-right: solid;
+}
+
+
+#col0row0 ~ div { 
+    border-top: solid;
+}
+
+#col1row0 ~ div {
+    border-top: solid;
+}
+
+#col2row0 ~ div {
+    border-top: solid;
+}
+
+
 .gridRowDiv {
     background-color: beige;
     width: 100%;
