@@ -15,6 +15,7 @@ Game module
     Array of inputted values
     interacts with player object
     interacts with display module
+    checks if a player has "x" or "o" and assigns the other to another player
 
 player object
     player sign: x or o 
@@ -23,6 +24,7 @@ player object
 */
 
 const displayGame = (() => {
+
     const gameContainer = document.querySelector("#gameContainer");
     const gridColumns = new Array();
     const gridRows = new Array();
@@ -30,6 +32,7 @@ const displayGame = (() => {
 
 //creates and sets cells
 for(let i = 0; i < 3; i++){
+
     gridColumns[i] = document.createElement("div");
     gridColumns[i].classList.add("gridColumns");
     gridColumns[i].id = "col" + i;
@@ -39,6 +42,7 @@ for(let i = 0; i < 3; i++){
     gridColumns[i].style.flexDirection = "column";
 
     for(let x = 0; x < 3; x++){
+
         gridRows[x] = document.createElement("div");
         gridRows[x].classList.add("gridRowDiv");
         gridRows[x].id = "col" + i + "row" + x;
@@ -46,12 +50,70 @@ for(let i = 0; i < 3; i++){
     }
 }
 
-const cells = document.querySelectorAll(".gridRowDiv");
+/*
+    move this to game module, because i am displaying based on game logic.
+    unless i find a way to make the two modules communicate, in which case,
+    i would handle the display aspect here and the logic aspect there.
+ */
+
+})();
+
+//player factory function
+const Player = (num) => {
+    let numberOfTurns = 0;
+    let playerSymbol =""; 
+
+    //potential for error handling if num is neither 1 or 2. Seems unnecessary
+    if(num == 1){
+        playerSymbol = "X";
+    } else {
+        playerSymbol = "O";
+    }
+
+    function incrementTurn(){
+        this.numberOfTurns += 1;
+    }
+    return {playerSymbol, numberOfTurns, incrementTurn};
+}
+
+const gameModule = (() =>{
+
+    const cells = document.querySelectorAll(".gridRowDiv");
+    const gameArr = new Array(3);
+    const p1 = Player(1);
+    const p2 = Player(2);
+    gameArr.fill(new Array(3).fill(null));
+    
+    //console.log(p1.numberOfTurns);
+    
+    function whosTurn(){
+        let totalTurns = p1.numberOfTurns + p2.numberOfTurns;
+        if(totalTurns % 2 == 0){
+            p1.incrementTurn();
+            return p1.playerSymbol;
+        } else if(totalTurns % 2 == 1){
+            p2.incrementTurn();
+            return p2.playerSymbol;
+        }
+    }
 
     for(let i = 0; i < cells.length; i++){
+
         cells[i].addEventListener("click",() =>{
-            cells[i].textContent = "X";
+            cells[i].textContent = whosTurn();
         })
 
     }
+
+  
+
+    
 })();
+
+
+//next up do turn function and probably use it in display module?
+
+
+
+
+
