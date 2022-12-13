@@ -6,6 +6,8 @@ display module
     handles dom elements
     updates dom 
     interacts with game module
+    add event listener to tictactoe cells and updates game array
+
 
 Game module
     turn function
@@ -25,6 +27,8 @@ const displayGame = (() => {
     const gridColumns = new Array();
     const gridRows = new Array();
 
+
+//creates and sets cells
 for(let i = 0; i < 3; i++){
     gridColumns[i] = document.createElement("div");
     gridColumns[i].classList.add("gridColumns");
@@ -41,4 +45,13 @@ for(let i = 0; i < 3; i++){
         gridColumns[i].appendChild(gridRows[x]);
     }
 }
+
+const cells = document.querySelectorAll(".gridRowDiv");
+
+    for(let i = 0; i < cells.length; i++){
+        cells[i].addEventListener("click",() =>{
+            cells[i].textContent = "X";
+        })
+
+    }
 })();
