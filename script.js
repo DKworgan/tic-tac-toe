@@ -82,9 +82,10 @@ const Player = (num) => {
 const gameModule = (() =>{
 
     const cells = document.querySelectorAll(".gridRowDiv");
-    const gameArr = [[null,null,null],[null,null,null],[null,null,null]];
+    let gameArr = [[null,null,null],[null,null,null],[null,null,null]];
     const p1 = Player(1);
     const p2 = Player(2);
+
     //gameArr.fill(new Array(3).fill(null));
     
     function whosTurn(){
@@ -95,6 +96,36 @@ const gameModule = (() =>{
         } else if(totalTurns % 2 == 1){
             p2.incrementTurn();
             return p2.playerSymbol;
+        }
+    }
+
+    function isThereWinner(playerSym){
+        let winner = false;
+
+        for(let i = 0; i < 3; i++){
+            if(gameArr[i][0] == playerSym && gameArr[i][1] == playerSym && gameArr[i][2] == playerSym){
+                return winner = true;
+            }
+            if(gameArr[0][i] == playerSym && gameArr[1][i] == playerSym && gameArr[2][i] == playerSym){
+                return winner = true;
+            }
+        }
+
+        if(gameArr[0][0] == playerSym && gameArr[1][1] == playerSym && gameArr[2][2] == playerSym){
+            return winner = true;
+        }
+        if(gameArr[0][2] == playerSym && gameArr[1][1] == playerSym && gameArr[2][0] == playerSym){
+            return winner = true;
+        }
+        return winner = false;
+    }   
+
+    isThereWinner();
+
+    function resetGame(){
+        gameArr = [[null,null,null],[null,null,null],[null,null,null]];
+        for(let i = 0; i < cells.length; i++){
+            cells[i].textContent = null;
         }
     }
 
@@ -110,13 +141,20 @@ const gameModule = (() =>{
                 cells[i].textContent = whosTurn();
                 gameArr[colId][rowId] = cells[i].textContent;
             }
+
+            if(isThereWinner(p1.playerSymbol)){
+                alert("X wins!");
+                resetGame();
+                console.log(gameArr)
+            } else if(isThereWinner(p2.playerSymbol)){
+                alert("O wins!");
+                resetGame();
+                console.log(gameArr);
+            }
         })
-
     }
-
   
 
-    
 })();
 
 
